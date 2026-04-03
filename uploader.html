@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Uploader — NyzzAPI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="nav-wrap"></div>
+<main class="main">
+  <div class="page-header">
+    <div class="page-breadcrumb">API Categories <span>›</span> Uploader</div>
+    <div class="page-title">Uploader</div>
+    <div class="page-desc">Upload file dan dapatkan URL publik permanen.</div>
+  </div>
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Semua Endpoint</div>
+      <div class="section-count">2 endpoint</div>
+    </div>
+    <div class="section-desc">Mendukung JPG, PNG, GIF, WebP, MP4, PDF, ZIP, TXT. Maks. 10MB per file.</div>
+    <div class="cards-grid">
+
+      <div class="api-card">
+        <div class="card-top">
+          <div class="card-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <span class="method-badge method-post">POST</span>
+        </div>
+        <div class="card-name">Image Upload</div>
+        <div class="card-endpoint">/upload</div>
+        <div class="card-desc">Upload satu file, dapatkan URL publik langsung siap pakai dan bisa dishare.</div>
+        <div class="card-actions">
+          <button class="btn-test" onclick="openModal('upload-modal')">Test Endpoint</button>
+          <a class="btn-view" href="uploader-image.html">View Docs</a>
+        </div>
+      </div>
+
+      <div class="api-card">
+        <div class="card-top">
+          <div class="card-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <span class="method-badge method-post">POST</span>
+        </div>
+        <div class="card-name">Multi Upload</div>
+        <div class="card-endpoint">/upload/multiple</div>
+        <div class="card-desc">Upload hingga 5 file sekaligus, semua URL dikembalikan dalam satu response JSON.</div>
+        <div class="card-actions">
+          <button class="btn-test" onclick="openModal('upload-modal')">Test Endpoint</button>
+          <a class="btn-view" href="uploader-multi.html">View Docs</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <footer><p>© 2026 <strong>NyzzAPI</strong> — <strong>api.nyzz.my.id</strong></p></footer>
+</main>
+
+<div class="modal-overlay" id="upload-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Image Upload — Test</div>
+      <button class="modal-close" onclick="closeModal('upload-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="file" id="upload-input" accept="image/*" style="display:none">
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('upload-input').click()">
+        <div class="upload-zone-icon">↑</div>
+        <div class="upload-zone-text">Klik atau drag & drop gambar</div>
+        <div class="upload-zone-hint">JPG, PNG, GIF, WebP — maks. 10MB</div>
+      </div>
+      <button class="btn-primary" id="upload-btn" onclick="doUpload()">
+        <span class="btn-text">Upload</span>
+        <div class="spinner" style="display:none"></div>
+      </button>
+      <div class="result-box" id="upload-result" style="display:none">
+        <div class="result-label">URL File</div>
+        <div class="result-url" id="upload-url"></div>
+        <button class="btn-copy" id="copy-btn" onclick="copyUrl()">Salin URL</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

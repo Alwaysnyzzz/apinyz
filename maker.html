@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Maker — NyzzAPI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="nav-wrap"></div>
+<main class="main">
+  <div class="page-header">
+    <div class="page-breadcrumb">API Categories <span>›</span> Maker</div>
+    <div class="page-title">Maker</div>
+    <div class="page-desc">Generate gambar dan konten visual secara otomatis.</div>
+  </div>
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Semua Endpoint</div>
+      <div class="section-count">1 endpoint</div>
+    </div>
+    <div class="section-desc">Klik <strong>Test Endpoint</strong> untuk mencoba langsung, atau <strong>View Docs</strong> untuk dokumentasi lengkap.</div>
+    <div class="cards-grid">
+      <div class="api-card">
+        <div class="card-top">
+          <div class="card-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <span class="method-badge method-get">GET</span>
+        </div>
+        <div class="card-name">Brat Generator</div>
+        <div class="card-endpoint">/brat?text=...</div>
+        <div class="card-desc">Generate gambar brat style viral TikTok dengan efek teks blur pada background putih.</div>
+        <div class="card-actions">
+          <button class="btn-test" onclick="openModal('brat-modal')">Test Endpoint</button>
+          <a class="btn-view" href="maker-brat.html">View Docs</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer><p>© 2026 <strong>NyzzAPI</strong> — <strong>api.nyzz.my.id</strong></p></footer>
+</main>
+
+<div class="modal-overlay" id="brat-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Brat Generator — Test</div>
+      <button class="modal-close" onclick="closeModal('brat-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="text" class="form-input" id="brat-text" placeholder="Ketik teks kamu..." oninput="previewBrat()">
+      <div class="brat-preview" id="brat-preview"><img id="brat-img" src="" alt="Brat"></div>
+      <button class="btn-primary" id="brat-btn" onclick="generateBrat()">
+        <span class="btn-text">Buat Brat</span>
+        <div class="spinner" style="display:none"></div>
+      </button>
+      <a class="btn-download" id="brat-download" download="brat.png">Unduh Gambar</a>
+    </div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Key — NYZZ API</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.key-card { background: var(--card); border: 1px solid var(--border2); border-radius: 16px; padding: 28px; margin-bottom: 20px; }
+.key-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+.key-info { background: rgba(108,92,231,0.08); border: 1px solid rgba(108,92,231,0.2); border-radius: 12px; padding: 16px 18px; margin-bottom: 16px; font-size: 14px; color: var(--text2); line-height: 1.7; }
+.key-info strong { color: var(--accent2); }
+</style>
+</head>
+<body>
+<div id="nav-wrap"></div>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-title">🔑 API Key</div>
+    <div class="page-desc">Informasi autentikasi untuk menggunakan NYZZ API.</div>
+  </div>
+
+  <div class="key-card">
+    <div class="key-title">Status Autentikasi</div>
+    <div class="key-info">
+      <strong>NYZZ API saat ini bersifat public dan gratis.</strong><br>
+      Kamu tidak memerlukan API Key untuk menggunakan semua endpoint yang tersedia. Cukup langsung hit URL endpoint dan API akan merespons.
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:14px 16px;">
+      <div style="font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">Contoh Request Tanpa Auth</div>
+      <code style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--green2)">GET https://api.nyzz.my.id/brat?text=halo</code>
+    </div>
+  </div>
+
+  <div class="key-card">
+    <div class="key-title">Rate Limit</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;">
+      Saat ini belum ada rate limit yang ketat. Gunakan API dengan wajar agar server tetap stabil untuk semua pengguna. Jangan lakukan spam request berlebihan.
+    </div>
+  </div>
+
+  <footer><p>© 2026 <strong>NYZZ API</strong> — <strong>api.nyzz.my.id</strong></p></footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi Upload — NYZZ API</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.multi-result-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+.multi-result-item .result-url { margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<div id="nav-wrap"></div>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-breadcrumb">Uploader <span>›</span> Multi Upload</div>
+    <div class="page-title">📁 Multi Upload</div>
+    <div class="page-desc">Upload hingga 5 file sekaligus dan dapatkan semua URL dalam satu response.</div>
+  </div>
+
+  <!-- TRY IT -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">🧪 Coba Langsung</div></div>
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:22px;">
+      <input type="file" id="multi-input" accept="image/*" multiple style="display:none">
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('multi-input').click()">
+        <div class="upload-zone-icon">📁</div>
+        <div class="upload-zone-text">Pilih hingga 5 file sekaligus</div>
+        <div class="upload-zone-hint">JPG, PNG, GIF, WebP • Max 10MB per file</div>
+      </div>
+      <div id="file-list" style="margin-top:10px;display:none"></div>
+      <button class="btn-primary" id="multi-btn" onclick="doMultiUpload()">
+        <span class="btn-text">⬆ Upload Semua</span>
+        <div class="spinner" style="display:none"></div>
+      </button>
+      <div id="multi-result" style="display:none;margin-top:14px;">
+        <div class="result-label" style="font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;">Hasil Upload</div>
+        <div id="multi-result-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOCS -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">📄 Dokumentasi</div></div>
+    <div class="docs-card">
+      <div class="docs-card-header">
+        <span class="method-badge method-post">POST</span>
+        <div class="docs-card-title">Multi Upload</div>
+        <div class="docs-card-desc">Upload maksimal 5 file sekaligus. Response berisi array URL publik untuk semua file.</div>
+      </div>
+      <div class="docs-card-body">
+        <div class="sub-title">Base Information</div>
+        <div class="info-grid">
+          <div class="info-item"><div class="info-key">Base URL</div><div class="info-val">https://api.nyzz.my.id</div></div>
+          <div class="info-item"><div class="info-key">Endpoint</div><div class="info-val">/upload/multiple</div></div>
+          <div class="info-item"><div class="info-key">Method</div><div class="info-val">POST</div></div>
+          <div class="info-item"><div class="info-key">Content-Type</div><div class="info-val">multipart/form-data</div></div>
+          <div class="info-item"><div class="info-key">Max Files</div><div class="info-val">5 file</div></div>
+          <div class="info-item"><div class="info-key">Max Size</div><div class="info-val">10 MB/file</div></div>
+        </div>
+
+        <div class="sub-title">Form Parameters</div>
+        <table class="params-table">
+          <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Keterangan</th></tr>
+          <tr>
+            <td class="p-name">files</td>
+            <td class="p-type">file[]</td>
+            <td class="p-req">Required</td>
+            <td>Array file yang diupload. Gunakan field name <code style="color:var(--accent3)">files</code> (bukan file)</td>
+          </tr>
+        </table>
+
+        <div class="sub-title">Contoh Request</div>
+        <div class="code-block">
+          <div class="code-top"><span class="code-lang">cURL</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre class="code-body">curl -X POST https://api.nyzz.my.id/upload/multiple \
+  -F "files=@foto1.jpg" \
+  -F "files=@foto2.png" \
+  -F "files=@foto3.gif"</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-top"><span class="code-lang">JavaScript / Fetch</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre class="code-body">const form = new FormData();
+// Tambahkan semua file dengan nama field "files"
+for (const file of fileInput.files) {
+  form.append('files', file);
+}
+
+const res = await fetch('https://api.nyzz.my.id/upload/multiple', {
+  method: 'POST',
+  body: form
+});
+const data = await res.json();
+// data.data = array of { filename, originalname, size, link }
+data.data.forEach(f => console.log(f.link));</pre>
+        </div>
+
+        <div class="sub-title">Response</div>
+        <div class="resp-tabs">
+          <button class="resp-tab t-success" onclick="switchTab(this,'multi','success')">✓ 200 Sukses</button>
+          <button class="resp-tab" onclick="switchTab(this,'multi','error')">✗ 400 Error</button>
+        </div>
+        <div id="multi-success" class="resp-content show">
+          <div class="code-block">
+            <div class="code-top"><span class="code-lang">JSON — 200 OK</span></div>
+            <pre class="code-body">{
+  "status": "sukses",
+  "message": "3 file berhasil diupload!",
+  "data": [
+    {
+      "filename": "uuid-1.jpg",
+      "originalname": "foto1.jpg",
+      "size": 102400,
+      "link": "https://api.nyzz.my.id/uploads/uuid-1.jpg"
+    },
+    {
+      "filename": "uuid-2.png",
+      "originalname": "foto2.png",
+      "size": 204800,
+      "link": "https://api.nyzz.my.id/uploads/uuid-2.png"
+    }
+  ]
+}</pre>
+          </div>
+        </div>
+        <div id="multi-error" class="resp-content">
+          <div class="code-block">
+            <div class="code-top"><span class="code-lang">JSON — 400 Bad Request</span></div>
+            <pre class="code-body">{
+  "status": "error",
+  "message": "Tidak ada file yang diupload!"
+}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer><p>© 2026 <strong>NYZZ API</strong> — <strong>api.nyzz.my.id</strong></p></footer>
+</main>
+<script src="app.js"></script>
+<script>
+const API = 'https://api.nyzz.my.id';
+const multiInput = document.getElementById('multi-input');
+
+multiInput.onchange = () => {
+  const files = Array.from(multiInput.files);
+  const list = document.getElementById('file-list');
+  if (!files.length) { list.style.display = 'none'; return; }
+  list.style.display = 'block';
+  list.innerHTML = files.map(f => `
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;">
+      <span>📄</span>
+      <span style="flex:1;color:var(--text2)">${f.name}</span>
+      <span style="color:var(--muted)">${(f.size/1024).toFixed(0)}KB</span>
+    </div>
+  `).join('');
+};
+
+async function doMultiUpload() {
+  const files = multiInput.files;
+  if (!files.length) return alert('Pilih file dulu!');
+  if (files.length > 5) return alert('Maksimal 5 file!');
+  const btn = document.getElementById('multi-btn');
+  const btnText = btn.querySelector('.btn-text');
+  const spinner = btn.querySelector('.spinner');
+  btn.disabled = true; btnText.style.display = 'none'; spinner.style.display = 'block';
+  try {
+    const form = new FormData();
+    for (const file of files) form.append('files', file);
+    const res = await fetch(`${API}/upload/multiple`, { method: 'POST', body: form });
+    const data = await res.json();
+    if (data.status === 'sukses') {
+      const resultDiv = document.getElementById('multi-result');
+      const list = document.getElementById('multi-result-list');
+      list.innerHTML = data.data.map((f, i) => `
+        <div class="multi-result-item">
+          <div class="result-label">File ${i+1} — ${f.originalname}</div>
+          <div class="result-url">${f.link}</div>
+          <button class="btn-copy" onclick="navigator.clipboard.writeText('${f.link}');this.textContent='✓ Tersalin!';setTimeout(()=>this.textContent='Salin URL',2000)">Salin URL</button>
+        </div>
+      `).join('');
+      resultDiv.style.display = 'block';
+    } else alert('Error: ' + data.message);
+  } catch(e) { alert('Gagal: ' + e.message); }
+  finally { btn.disabled = false; btnText.style.display = ''; spinner.style.display = 'none'; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brat Generator — NYZZ API</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="nav-wrap"></div>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-breadcrumb">Maker <span>›</span> Brat Generator</div>
+    <div class="page-title">✦ Brat Generator</div>
+    <div class="page-desc">Generate gambar brat style viral TikTok dengan efek teks blur pada background putih.</div>
+  </div>
+
+  <!-- TRY IT -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">🧪 Coba Langsung</div></div>
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:22px;display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;">
+      <div style="flex:1;min-width:220px;">
+        <div class="sub-title" style="margin-bottom:10px;">Input Teks</div>
+        <input type="text" class="form-input" id="brat-text" placeholder="Ketik teks kamu..." oninput="previewBrat()">
+        <button class="btn-primary" id="brat-btn" onclick="generateBrat()" style="margin-top:10px;">
+          <span class="btn-text">Buat Brat</span>
+          <div class="spinner" style="display:none"></div>
+        </button>
+        <a class="btn-download" id="brat-download" download="brat.png">⬇ Download Gambar</a>
+      </div>
+      <div style="flex:1;min-width:200px;">
+        <div class="sub-title" style="margin-bottom:10px;">Preview</div>
+        <div class="brat-preview" id="brat-preview" style="display:block;min-height:120px;background:var(--bg3);border-radius:12px;border:1px solid var(--border2);">
+          <img id="brat-img" src="" alt="Brat preview" style="width:100%;display:none;border-radius:12px;">
+          <div id="brat-placeholder" style="display:flex;align-items:center;justify-content:center;height:120px;color:var(--muted);font-size:13px;">Hasil muncul di sini</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOCS -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">📄 Dokumentasi</div></div>
+
+    <div class="docs-card">
+      <div class="docs-card-header">
+        <span class="method-badge method-get">GET</span>
+        <div class="docs-card-title">Brat Generator</div>
+        <div class="docs-card-desc">Menghasilkan gambar PNG dengan teks blur style brat di background putih.</div>
+      </div>
+      <div class="docs-card-body">
+
+        <div class="sub-title">Base Information</div>
+        <div class="info-grid">
+          <div class="info-item"><div class="info-key">Base URL</div><div class="info-val">https://api.nyzz.my.id</div></div>
+          <div class="info-item"><div class="info-key">Endpoint</div><div class="info-val">/brat</div></div>
+          <div class="info-item"><div class="info-key">Method</div><div class="info-val">GET</div></div>
+          <div class="info-item"><div class="info-key">Response Type</div><div class="info-val">image/png</div></div>
+          <div class="info-item"><div class="info-key">Auth</div><div class="info-val">Tidak perlu</div></div>
+        </div>
+
+        <div class="sub-title">Query Parameters</div>
+        <table class="params-table">
+          <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Keterangan</th></tr>
+          <tr>
+            <td class="p-name">text</td>
+            <td class="p-type">string</td>
+            <td class="p-req">Required</td>
+            <td>Teks yang akan dirender menjadi gambar brat style</td>
+          </tr>
+        </table>
+
+        <div class="sub-title">Contoh Request</div>
+        <div class="code-block">
+          <div class="code-top"><span class="code-lang">URL</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre class="code-body">GET https://api.nyzz.my.id/brat?text=halo%20dunia</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-top"><span class="code-lang">cURL</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre class="code-body">curl -X GET "https://api.nyzz.my.id/brat?text=halo" --output brat.png</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-top"><span class="code-lang">JavaScript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre class="code-body">// Tampilkan langsung di img tag
+const img = document.createElement('img');
+img.src = 'https://api.nyzz.my.id/brat?text=halo';
+document.body.appendChild(img);
+
+// Atau download sebagai file
+const res = await fetch('https://api.nyzz.my.id/brat?text=halo');
+const blob = await res.blob();
+const url = URL.createObjectURL(blob);</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-top"><span class="code-lang">Bot WhatsApp (Baileys)</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre class="code-body">const text = m.text.replace('.brat ', '');
+const url = `https://api.nyzz.my.id/brat?text=${encodeURIComponent(text)}`;
+const res = await fetch(url);
+const buffer = await res.buffer();
+await conn.sendMessage(m.chat, { image: buffer, caption: text });</pre>
+        </div>
+
+        <div class="sub-title">Response</div>
+        <div class="resp-tabs">
+          <button class="resp-tab t-success" onclick="switchTab(this,'brat','success')">✓ 200 Success</button>
+          <button class="resp-tab" onclick="switchTab(this,'brat','error')">✗ Error</button>
+        </div>
+        <div id="brat-success" class="resp-content show">
+          <div class="code-block">
+            <div class="code-top"><span class="code-lang">Response: image/png</span></div>
+            <pre class="code-body">// Response berupa binary PNG image langsung
+// Bisa langsung dipakai di HTML:
+&lt;img src="https://api.nyzz.my.id/brat?text=halo" /&gt;
+
+// Content-Type: image/png
+// Status: 200 OK</pre>
+          </div>
+        </div>
+        <div id="brat-error" class="resp-content">
+          <div class="code-block">
+            <div class="code-top"><span class="code-lang">Response: JSON</span></div>
+            <pre class="code-body">{
+  "<k>status</k>": "<s>error</s>",
+  "<k>message</k>": "<s>Internal server error</s>"
+}</pre>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer><p>© 2026 <strong>NYZZ API</strong> — <strong>api.nyzz.my.id</strong></p></footer>
+</main>
+
+<script src="app.js"></script>
+<script>
+  // Override preview untuk halaman ini (inline, bukan modal)
+  function previewBrat() {
+    clearTimeout(window._bt);
+    const text = document.getElementById('brat-text').value.trim();
+    const img = document.getElementById('brat-img');
+    const ph = document.getElementById('brat-placeholder');
+    const dl = document.getElementById('brat-download');
+    if (!text) { img.style.display='none'; ph.style.display='flex'; dl.style.display='none'; return; }
+    window._bt = setTimeout(() => {
+      const url = `https://api.nyzz.my.id/brat?text=${encodeURIComponent(text)}`;
+      img.src = url;
+      img.onload = () => { img.style.display='block'; ph.style.display='none'; };
+      dl.href = url; dl.style.display = 'block';
+    }, 500);
+  }
+</script>
+</body>
+</html>

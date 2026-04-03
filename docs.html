@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentation — NYZZ API</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.doc-link-card {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--card); border: 1px solid var(--border2); border-radius: 14px;
+  padding: 18px 20px; text-decoration: none; color: var(--text);
+  transition: all 0.2s; margin-bottom: 10px;
+}
+.doc-link-card:hover { border-color: rgba(108,92,231,0.4); transform: translateX(4px); }
+.doc-link-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.doc-link-info { flex: 1; }
+.doc-link-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+.doc-link-desc { font-size: 12px; color: var(--text2); }
+.doc-link-arrow { color: var(--muted); font-size: 18px; }
+</style>
+</head>
+<body>
+<div id="nav-wrap"></div>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-title">📄 Documentation</div>
+    <div class="page-desc">Semua dokumentasi endpoint NYZZ API. Pilih kategori untuk melihat detail.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-title">🎨 Maker</div></div>
+    <a class="doc-link-card" href="maker-brat.html">
+      <div class="doc-link-icon">✦</div>
+      <div class="doc-link-info">
+        <div class="doc-link-title">Brat Generator <span class="method-badge method-get" style="font-size:9px;padding:2px 7px">GET</span></div>
+        <div class="doc-link-desc">/brat?text=... — Generate gambar brat style viral TikTok</div>
+      </div>
+      <div class="doc-link-arrow">›</div>
+    </a>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-title">📤 Uploader</div></div>
+    <a class="doc-link-card" href="uploader-image.html">
+      <div class="doc-link-icon">🖼️</div>
+      <div class="doc-link-info">
+        <div class="doc-link-title">Image Upload <span class="method-badge method-post" style="font-size:9px;padding:2px 7px">POST</span></div>
+        <div class="doc-link-desc">/upload — Upload 1 file, dapatkan URL publik</div>
+      </div>
+      <div class="doc-link-arrow">›</div>
+    </a>
+    <a class="doc-link-card" href="uploader-multi.html">
+      <div class="doc-link-icon">📁</div>
+      <div class="doc-link-info">
+        <div class="doc-link-title">Multi Upload <span class="method-badge method-post" style="font-size:9px;padding:2px 7px">POST</span></div>
+        <div class="doc-link-desc">/upload/multiple — Upload hingga 5 file sekaligus</div>
+      </div>
+      <div class="doc-link-arrow">›</div>
+    </a>
+  </div>
+
+  <footer><p>© 2026 <strong>NYZZ API</strong> — <strong>api.nyzz.my.id</strong></p></footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
