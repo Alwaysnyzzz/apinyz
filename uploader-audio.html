@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Audio Upload — NyzzAPI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="nav-wrap"></div>
+<main class="main">
+  <div class="page-header">
+    <div class="page-breadcrumb">Uploader <span>›</span> Audio Upload</div>
+    <div class="page-title">Audio Upload</div>
+    <div class="page-desc">Upload file audio ke Cloudflare R2 dan dapatkan URL publik.</div>
+  </div>
+  <div class="section">
+    <div class="section-header"><div class="section-title">Test Endpoint</div></div>
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:22px">
+      <input type="file" id="upload-input" style="display:none">
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('upload-input').click()">
+        <div class="upload-zone-icon">&#8593;</div>
+        <div class="upload-zone-text">Klik atau drag & drop audio</div>
+        <div class="upload-zone-hint">Format: MP3 — maks. 100MB</div>
+      </div>
+      <button class="btn-primary" id="upload-btn" onclick="doUpload('/uploader/audio','file','upload-input','upload-btn','upload-result','upload-url')">
+        <span class="btn-text">Upload</span>
+        <div class="spinner" style="display:none"></div>
+      </button>
+      <div class="result-box" id="upload-result" style="display:none">
+        <div class="result-label">URL File</div>
+        <div class="result-url" id="upload-url"></div>
+        <button class="btn-copy" id="copy-btn" onclick="copyUrl()">Salin URL</button>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-header"><div class="section-title">Dokumentasi</div></div>
+    <div class="docs-card">
+      <div class="docs-card-header">
+        <span class="method-badge method-post">POST</span>
+        <div class="docs-card-title">Audio Upload</div>
+        <div class="docs-card-desc">Upload audio ke Cloudflare R2. Response berisi URL publik siap pakai.</div>
+      </div>
+      <div class="docs-card-body">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-key">Endpoint</div><div class="info-val">/uploader/audio</div></div>
+          <div class="info-item"><div class="info-key">Method</div><div class="info-val">POST</div></div>
+          <div class="info-item"><div class="info-key">Auth</div><div class="info-val">apikey required</div></div>
+          <div class="info-item"><div class="info-key">Max Size</div><div class="info-val">100 MB</div></div>
+          <div class="info-item"><div class="info-key">Format</div><div class="info-val">MP3</div></div>
+        </div>
+        <div class="code-block">
+          <div class="code-top"><span class="code-lang">cURL</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre class="code-body">curl -X POST "https://api.nyzz.my.id/uploader/audio?apikey=API_KEY" \\
+  -F "file=@namafile.mp3"</pre>
+        </div>
+        <div class="resp-tabs">
+          <button class="resp-tab t-success" onclick="switchTab(this,'up','success')">✓ 200 Sukses</button>
+          <button class="resp-tab" onclick="switchTab(this,'up','error')">&#x2717; Error</button>
+        </div>
+        <div id="up-success" class="resp-content show">
+          <div class="code-block"><div class="code-top"><span class="code-lang">JSON 200</span></div>
+          <pre class="code-body">{
+  "status": "sukses",
+  "data": {
+    "filename": "1a2b3c4d.mp3",
+    "originalname": "namafile.mp3",
+    "size": 1024000,
+    "url": "https://uploads.nyzz.my.id/audios/1a2b3c4d.mp3",
+    "view_url": "https://api.nyzz.my.id/uploader/audio/1a2b3c4d.mp3"
+  }
+}</pre></div>
+        </div>
+        <div id="up-error" class="resp-content">
+          <div class="code-block"><div class="code-top"><span class="code-lang">JSON Error</span></div>
+          <pre class="code-body">{ "status": "error", "message": "Pesan error" }</pre></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer><p>&#169; 2026 <strong>NyzzAPI</strong> &#8212; <strong>api.nyzz.my.id</strong></p></footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

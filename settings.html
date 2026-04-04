@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Setting — NyzzAPI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="nav-wrap"></div>
+<main class="main">
+  <div class="page-header">
+    <div class="page-title">Setting</div>
+    <div class="page-desc">Pengaturan akun dan preferensi.</div>
+  </div>
+  <div class="profile-card">
+    <div class="profile-body">
+      <div class="sub-title">Paket & Limit</div>
+      <div class="info-grid" style="margin-bottom:20px">
+        <div class="info-item"><div class="info-key">Paket Aktif</div><div class="info-val" id="s-plan">Free</div></div>
+        <div class="info-item"><div class="info-key">Limit/Hari</div><div class="info-val" id="s-limit">1,000</div></div>
+      </div>
+      <div style="padding:14px 16px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;font-size:13px;color:var(--text2);margin-bottom:20px">
+        🚀 <strong style="color:#fbbf24">Upgrade Premium</strong> segera hadir — lebih banyak limit, fitur VIP, dan prioritas support.
+      </div>
+      <div class="sub-title" style="margin-top:4px">Bahaya</div>
+      <button onclick="if(confirm('Yakin logout?'))logout()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--red);padding:10px 20px;border-radius:9px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s" onmouseover="this.style.background='rgba(239,68,68,.18)'" onmouseout="this.style.background='rgba(239,68,68,.1)'">Logout dari Akun</button>
+    </div>
+  </div>
+  <footer><p>© 2026 <strong>NyzzAPI</strong> — <strong>api.nyzz.my.id</strong></p></footer>
+</main>
+<script src="app.js"></script>
+<script>
+const API='https://api.nyzz.my.id';
+document.addEventListener('DOMContentLoaded',async()=>{
+  const token=localStorage.getItem('nyzz_token');if(!token)return;
+  try{
+    const res=await fetch(`${API}/auth/me`,{headers:{Authorization:`Bearer ${token}`}});
+    const data=await res.json();
+    if(data.status==='sukses'){
+      document.getElementById('s-plan').textContent=data.user.plan;
+      document.getElementById('s-limit').textContent=data.user.daily_limit.toLocaleString();
+    }
+  }catch{}
+});
+function logout(){localStorage.removeItem('nyzz_token');localStorage.removeItem('nyzz_user');window.location.href='index.html';}
+</script>
+</body>
+</html>

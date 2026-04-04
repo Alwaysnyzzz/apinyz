@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Akun — NyzzAPI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="nav-wrap"></div>
+<div id="not-logged" style="display:none">
+  <main class="main" style="display:flex;align-items:center;justify-content:center;min-height:80vh">
+    <div style="text-align:center">
+      <div style="font-size:48px;margin-bottom:16px">🔒</div>
+      <div style="font-size:18px;font-weight:800;margin-bottom:8px">Login Diperlukan</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:20px">Login atau register untuk mengakses halaman ini.</div>
+      <div style="display:flex;gap:10px;justify-content:center">
+        <a href="login.html" style="background:var(--accent);color:#fff;padding:10px 24px;border-radius:10px;text-decoration:none;font-weight:700;font-size:13px">Login</a>
+        <a href="register.html" style="background:var(--bg3);color:var(--text);border:1px solid var(--border2);padding:10px 24px;border-radius:10px;text-decoration:none;font-weight:700;font-size:13px">Register</a>
+      </div>
+    </div>
+  </main>
+</div>
+<main class="main" id="main-content" style="display:none">
+  <div class="page-header">
+    <div class="page-title">Akun</div>
+    <div class="page-desc">Kelola profil, API Key, dan penggunaan kamu.</div>
+  </div>
+  <div class="account-tabs">
+    <button class="account-tab active" onclick="showTab('profile')">Profil</button>
+    <button class="account-tab" onclick="showTab('keys')">API Key</button>
+    <button class="account-tab" onclick="showTab('usage')">Penggunaan</button>
+    <button class="account-tab" onclick="showTab('detail')">Detail</button>
+  </div>
+  <div class="tab-content active" id="tab-profile">
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-avatar" id="pf-avatar">U</div>
+        <div>
+          <div class="profile-name" id="pf-name">—</div>
+          <div class="profile-plan" id="pf-plan">Free Plan</div>
+        </div>
+      </div>
+      <div class="profile-body">
+        <div class="profile-stat-grid">
+          <div class="profile-stat"><div class="profile-stat-val" id="pf-today">—</div><div class="profile-stat-lbl">Request Hari Ini</div></div>
+          <div class="profile-stat"><div class="profile-stat-val" id="pf-limit">—</div><div class="profile-stat-lbl">Limit Harian</div></div>
+          <div class="profile-stat"><div class="profile-stat-val" id="pf-remaining">—</div><div class="profile-stat-lbl">Tersisa</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content" id="tab-keys">
+    <div class="profile-card">
+      <div class="profile-body">
+        <div class="key-row">
+          <div class="key-row-label">API Key</div>
+          <div class="key-row-inner">
+            <div class="key-val" id="display-apikey">••••••••••••••••••••</div>
+            <div class="key-actions">
+              <button class="btn-regen" onclick="regenKey('api')">Buat Ulang</button>
+              <button class="btn-salin" id="copy-apikey" onclick="copyKey('display-apikey','copy-apikey')">Salin</button>
+            </div>
+          </div>
+        </div>
+        <div class="key-row">
+          <div class="key-row-label">Sign Key</div>
+          <div class="key-row-inner">
+            <div class="key-val" id="display-signkey">••••••••••••••••••••</div>
+            <div class="key-actions">
+              <button class="btn-regen" onclick="regenKey('sign')">Buat Ulang</button>
+              <button class="btn-salin" id="copy-signkey" onclick="copyKey('display-signkey','copy-signkey')">Salin</button>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding:12px 14px;background:rgba(108,92,231,.08);border:1px solid rgba(108,92,231,.2);border-radius:10px;font-size:12.5px;color:var(--text2);line-height:1.6">
+          <strong style="color:var(--accent2)">Cara pakai:</strong><br>
+          GET: <code style="color:var(--green2);font-family:'JetBrains Mono',monospace;font-size:11px">https://api.nyzz.my.id/brat?text=halo&apikey=API_KEY</code><br>
+          POST: header <code style="color:var(--green2);font-family:'JetBrains Mono',monospace;font-size:11px">x-api-key: API_KEY</code>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content" id="tab-usage">
+    <div class="profile-card">
+      <div class="profile-body">
+        <div class="sub-title">Request Hari Ini</div>
+        <div style="background:var(--bg3);border-radius:10px;height:10px;overflow:hidden;margin:8px 0 6px">
+          <div id="usage-bar" style="background:linear-gradient(90deg,var(--accent),var(--accent2));height:100%;width:0%;transition:width .6s;border-radius:10px"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:16px">
+          <span id="usage-text">0 / 1000</span><span id="usage-pct">0%</span>
+        </div>
+        <div class="info-grid">
+          <div class="info-item"><div class="info-key">Paket</div><div class="info-val" id="u-plan">Free</div></div>
+          <div class="info-item"><div class="info-key">Limit/Hari</div><div class="info-val" id="u-limit">1,000</div></div>
+          <div class="info-item"><div class="info-key">Reset</div><div class="info-val">00:00 WIB</div></div>
+          <div class="info-item"><div class="info-key">Member Sejak</div><div class="info-val" id="u-since">—</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content" id="tab-detail">
+    <div class="profile-card">
+      <div class="profile-body">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-key">Username</div><div class="info-val" id="d-username">—</div></div>
+          <div class="info-item"><div class="info-key">Paket</div><div class="info-val" id="d-plan">Free</div></div>
+          <div class="info-item"><div class="info-key">Limit/Hari</div><div class="info-val" id="d-limit">—</div></div>
+          <div class="info-item"><div class="info-key">Bergabung</div><div class="info-val" id="d-joined">—</div></div>
+          <div class="info-item"><div class="info-key">Status</div><div class="info-val" style="color:var(--green2)">Aktif ✓</div></div>
+        </div>
+        <div class="key-row" style="margin-top:16px">
+          <div class="key-row-label">API Key</div>
+          <div class="key-row-inner">
+            <div class="key-val" id="d-apikey">—</div>
+            <div class="key-actions">
+              <button class="btn-regen" onclick="regenKey('api')">Buat Ulang</button>
+              <button class="btn-salin" id="d-copy-api" onclick="copyKey('d-apikey','d-copy-api')">Salin</button>
+            </div>
+          </div>
+        </div>
+        <div class="key-row">
+          <div class="key-row-label">Sign Key</div>
+          <div class="key-row-inner">
+            <div class="key-val" id="d-signkey">—</div>
+            <div class="key-actions">
+              <button class="btn-regen" onclick="regenKey('sign')">Buat Ulang</button>
+              <button class="btn-salin" id="d-copy-sign" onclick="copyKey('d-signkey','d-copy-sign')">Salin</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer><p>© 2026 <strong>NyzzAPI</strong> — <strong>api.nyzz.my.id</strong></p></footer>
+</main>
+<script src="app.js"></script>
+<script>
+const API='https://api.nyzz.my.id';
+document.addEventListener('DOMContentLoaded',async()=>{
+  const token=localStorage.getItem('nyzz_token');
+  if(!token){document.getElementById('not-logged').style.display='block';return;}
+  try{
+    const res=await fetch(`${API}/auth/me`,{headers:{Authorization:`Bearer ${token}`}});
+    const data=await res.json();
+    if(data.status!=='sukses')throw new Error();
+    document.getElementById('main-content').style.display='block';
+    fillData(data.user,data.usage);
+  }catch{localStorage.removeItem('nyzz_token');document.getElementById('not-logged').style.display='block';}
+});
+function fillData(u,us){
+  const remaining=Math.max(0,us.limit-us.today);
+  const pct=Math.min(100,Math.round((us.today/us.limit)*100));
+  const joined=new Date(u.created_at).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('pf-avatar').textContent=u.username[0].toUpperCase();
+  document.getElementById('pf-name').textContent=u.username;
+  document.getElementById('pf-plan').textContent=u.plan==='premium'?'⭐ Premium':'Free Plan';
+  document.getElementById('pf-today').textContent=us.today.toLocaleString();
+  document.getElementById('pf-limit').textContent=us.limit.toLocaleString();
+  document.getElementById('pf-remaining').textContent=remaining.toLocaleString();
+  ['display-apikey','d-apikey'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=u.api_key;});
+  ['display-signkey','d-signkey'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=u.sign_key;});
+  document.getElementById('usage-bar').style.width=pct+'%';
+  document.getElementById('usage-bar').style.background=pct>80?'linear-gradient(90deg,#ef4444,#f87171)':'linear-gradient(90deg,var(--accent),var(--accent2))';
+  document.getElementById('usage-text').textContent=`${us.today.toLocaleString()} / ${us.limit.toLocaleString()}`;
+  document.getElementById('usage-pct').textContent=pct+'%';
+  document.getElementById('u-plan').textContent=u.plan;
+  document.getElementById('u-limit').textContent=us.limit.toLocaleString();
+  document.getElementById('u-since').textContent=joined;
+  document.getElementById('d-username').textContent=u.username;
+  document.getElementById('d-plan').textContent=u.plan;
+  document.getElementById('d-limit').textContent=us.limit.toLocaleString();
+  document.getElementById('d-joined').textContent=joined;
+  localStorage.setItem('nyzz_apikey',u.api_key);
+}
+function showTab(name){
+  const tabs=['profile','keys','usage','detail'];
+  document.querySelectorAll('.account-tab').forEach((t,i)=>t.classList.toggle('active',tabs[i]===name));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+name)?.classList.add('active');
+}
+function copyKey(elId,btnId){
+  const val=document.getElementById(elId)?.textContent;if(!val||val==='—')return;
+  navigator.clipboard.writeText(val);
+  const btn=document.getElementById(btnId);btn.textContent='✓ Tersalin!';btn.classList.add('copied');
+  setTimeout(()=>{btn.textContent='Salin';btn.classList.remove('copied');},2000);
+}
+async function regenKey(type){
+  if(!confirm(`Yakin buat ulang ${type==='api'?'API Key':'Sign Key'}?`))return;
+  const token=localStorage.getItem('nyzz_token');
+  try{
+    const res=await fetch(`${API}/auth/regen-${type}key`,{method:'POST',headers:{Authorization:`Bearer ${token}`}});
+    const data=await res.json();
+    if(data.status==='sukses'){
+      const newKey=data.api_key||data.sign_key;
+      if(type==='api'){['display-apikey','d-apikey'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=newKey;});localStorage.setItem('nyzz_apikey',newKey);}
+      else{['display-signkey','d-signkey'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=newKey;});}
+      alert('Key berhasil dibuat ulang!');
+    }else alert('Error: '+data.message);
+  }catch{alert('Gagal!');}
+}
+</script>
+</body>
+</html>
